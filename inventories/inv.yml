@@ -1,0 +1,11 @@
+all:
+  children:
+    vms:
+      children:
+        load_balancers:
+          hosts:
+            10.0.1.55
+        app_servers: 
+          hosts:
+            10.0.1.103
+
