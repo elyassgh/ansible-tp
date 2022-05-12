@@ -1,0 +1,5 @@
+# roles/tomcat-app/defaults/main.yml
+---
+
+tomcat_app_repository: https://s3-eu-central-1.amazonaws.com/octo-formation
+tomcat_app_name: SimpleWar

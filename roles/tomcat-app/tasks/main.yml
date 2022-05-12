@@ -1,0 +1,12 @@
+# roles/tomcat-app/tasks/main.yml
+---
+
+- import_tasks: check-deploy-needed.yml
+
+- import_tasks: deploy.yml
+  when: tomcat_app_needs_deploy
+
+- name: Make sure tomcat is started
+  meta: flush_handlers
+  
+- import_tasks: tests.yml
