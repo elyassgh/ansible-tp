@@ -1,5 +1,8 @@
 # roles/tomcat-app/tasks/deploy.yml
 ---
+
+- include_tasks: disable-in-haproxy.yml
+
 - name: Stop tomcat
   service:
     name: tomcat8
@@ -17,3 +20,6 @@
     dest: /var/lib/tomcat8/webapps/{{ tomcat_app_name }}.war
     force: yes
   notify: Restart tomcat
+
+- include_tasks: enable-in-haproxy.yml
+
