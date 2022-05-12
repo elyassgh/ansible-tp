@@ -1,0 +1,24 @@
+---    
+- name: Install HAProxy
+  package:
+    name: haproxy
+- name: Allow service to start
+  lineinfile:
+    dest: /etc/default/haproxy
+    regexp: ENABLED=.*
+    line: ENABLED=1
+- name: Start / Enable HAProxy
+  service:
+    name: haproxy
+    enabled: true
+    state: started
+- name: Install configuration file
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+- name: Start / Enable HAProxy
+  service:
+    name: haproxy
+    enabled: true
+    state: restarted
+

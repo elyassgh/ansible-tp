@@ -1,0 +1,12 @@
+---
+- name: Install tomcat
+  package:
+    name: tomcat8
+- name: Start / Enable tomcat
+  service:
+    name: tomcat8
+    enabled: true
+    state: started
+- name: Wait for tomcat to start
+  wait_for:
+    port: 8080

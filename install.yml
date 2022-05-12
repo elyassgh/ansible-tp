@@ -1,56 +1,21 @@
+# install.yml
+---
 - hosts: all
   gather_facts: true
-
-- hosts: app_servers
   become: true
-  tasks:
-    - name: Install tomcat
-      package:
-        name: tomcat8
-    - name: Start / Enable tomcat
-      service:
-        name: tomcat8
-        enabled: true
-        state: started
-    - name: Wait for tomcat to start
-      wait_for:
-        port: 8080
-    - name: Ensure home page returns 200
-      uri:
-        url: http://127.0.0.1:8080/
+  roles:
+  - role: common
+    tags: common
 
 - hosts: load_balancers
   become: true
-  tasks:
-    - name: Install HAProxy
-      package:
-        name: haproxy
-    - name: Allow service to start
-      lineinfile:
-        dest: /etc/default/haproxy
-        regexp: ENABLED=.*
-        line: ENABLED=1
-    - name: Start / Enable HAProxy
-      service:
-        name: haproxy
-        enabled: true
-        state: started
-    - name: Install configuration file
-      template:
-        src: haproxy.cfg.j2
-        dest: /etc/haproxy/haproxy.cfg
-    - name: Start / Enable HAProxy
-      service:
-        name: haproxy
-        enabled: true
-        state: restarted
-    - name: Wait for HAProxy to be up on port 9000
-      wait_for:
-        port: 9000
-    - name: wait for HAProxy to be up on port 80
-      wait_for:
-        port: 80
-    - name: Ensure Stat page returns 200
-      uri:
-        url: http://127.0.0.1:9000/
+  roles:
+  - role: haproxy
+    tags: haproxy
 
+- hosts: app_servers
+  gather_facts: false
+  become: true
+  roles:
+  - role: tomcat
+    tags: tomcat

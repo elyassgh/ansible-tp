@@ -1,0 +1,7 @@
+---
+- name: wait for HAProxy to be up on port 80
+  wait_for:
+    port: 80
+- name: Ensure Stat page returns 200
+  uri:
+    url: http://127.0.0.1:9000/
